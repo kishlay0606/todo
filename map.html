@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>LBB</title>
+    <style>
+        #map {
+            height: 100%;
+        }
+        
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+</body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    var lat, long, map, markers = [];
+
+    function init() {
+
+        navigator.geolocation.
+        getCurrentPosition((position) => {
+            lat = position.coords.latitude
+            long = position.coords.longitude
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {
+                    lat: lat,
+                    lng: long
+                },
+                zoom: 20
+            });
+            loadLocations()
+        }, (err) => {
+            console.log(`User has denied the permission for location`, err)
+        })
+    }
+
+    function loadLocations() {
+        axios.get(`https://apisearch.lbb.in/v1/partner/places/?aroundLatLng=${lat}%2C${long}&aroundRadius=2000&count=30&facetFilters=%5B%5B%22tags%3Astreet-food%22%5D%5D`, {
+                headers: {
+                    'x-api-key': 'AIzaSyDKd7LjOeLk2pACCmoZc5-gC5wWJFSjKas'
+                }
+            })
+            .then((response) => {
+                let places = response.data.hits
+                for (let place of places) {
+                    markers.push(new google.maps.Marker({
+                        position: {
+                            lat: place._geoloc.lat,
+                            lng: place._geoloc.lng
+                        },
+                        map: map
+                    }))
+                }
+            })
+            .catch((err) => {
+                console.log(`couldn't get LBB data`, err)
+            })
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDKd7LjOeLk2pACCmoZc5-gC5wWJFSjKas&callback=init" async defer></script>
+
+</html>

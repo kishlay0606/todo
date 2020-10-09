@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Google keep</title>
+    <!-- <link rel="stylesheet" href="task_save.css"> -->
+    <style>
+    #list>li {
+    list-style-type: none;
+}
+
+#myInput {
+    border-color: #ccc;
+    border-style: solid;
+    height: 10%;
+    width: 15%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 2px solid;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+#text {
+    border-color: black;
+    border-style: solid;
+    padding-left: 30%;
+    padding-right: 25%;
+    height: 40%;
+    width: 30%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 2px solid;
+    text-align: center;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.h1 {
+    color: black;
+    padding-left: 40%;
+}
+
+.strikethrough {
+    text-decoration: line-through;
+}
+    </style>
+</head>
+
+<body>
+    <div>
+        <h1 class="h1">GOOGLE KEEP</h1>
+        <!-- <span><a href="index.html" style="float:right;color:Black">Log Out</a>
+        </span> -->
+        <div id="header">
+
+            <form action="../user/logout" class="register" method="POST"  >
+ 
+                
+    
+                <li><input type="submit" name="logout" style="float:right;color:Black" value="Log Out"></li>
+            </form>
+
+        </div>
+    </div>
+    <div style="padding-left: 35%;background-color: saddlebrown; ">
+        <input type="text" id="text" placeholder="Save Your Tasks Here..." />
+        <span style="padding: 5px;"><button style="width: 70px;height: 40px;" onClick="addToDo()">Add</button></span>
+        <span>
+            <input style="float: right;" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for tasks.." title="Type in a name"></span></div>
+    <div style="padding-left: 40%;background-color: saddlebrown; ">
+        <img id="output">
+        <input type="file" accept="image/*" id="file-input"></div>
+
+    <ul id="list">
+    </ul>
+</body>
+<script >
+    const output = document.getElementById('output');
+const fileInput = document.getElementById('file-input');
+
+function doSomethingWithFiles(fileList) {
+    let file = null;
+    for (let i = 0; i < fileList.length; i++) {
+        if (fileList[i].type.match(/^image\//)) {
+            file = fileList[i];
+            break;
+        }
+    }
+    if (file !== null) {
+        output.src = URL.createObjectURL(file);
+        output.style.height = "120px";
+        output.style.width = "120px";
+    }
+}
+fileInput.addEventListener('change', (e) => doSomethingWithFiles(e.target.files));
+let count = 0;
+
+function addToDo() {
+    let text = document.getElementById('text').value.trim()
+    if (!text) {
+        alert('Type something')
+        return
+    }
+    let list = document.getElementById('list')
+    let li = document.createElement('li')
+    if (document.getElementById('output').style.height != "0px") {
+        li.innerHTML = `<a href="#">
+    <input type='checkbox' id="checkbox${count}" onClick="strike(${count})"/> 
+    <img style="height:120px;width:120px" src=${document.getElementById('output').src}>
+   <span id="span${count}">${text}</span>
+   <button id="button${count}" onClick="cross(${count})">x</button></a>
+   `
+    } else {
+        li.innerHTML = `<a href="#">
+              <input type='checkbox' id="checkbox${count}" onClick="strike(${count})"/> 
+              <span id="span${count}">${text}</span>
+              <button id="button${count}" onClick="cross(${count})">x</button></a>
+
+      `
+    }
+
+
+    list.appendChild(li)
+    count++;
+    document.getElementById('text').value = "";
+    document.getElementById('output').src = "";
+    // document.getElementByTagName('img')[0].removeAttribute("height");
+    // document.getElementByTagName('img')[0].removeAttribute("width");
+    output.style.height = "0px";
+    output.style.width = "0px";
+    file = null;
+    fileList = null;
+
+}
+
+
+function cross(id) {
+    var litt = document.getElementById('button' + id).parentElement;
+    litt.style.display = "none";
+}
+
+function strike(id) {
+    document.getElementById('span' + id).classList.toggle('strikethrough')
+}
+
+function myFunction() {
+    var input, filter, ul, li, a, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("list");
+    li = ul.getElementsByTagName("li");
+    for (i = 0; i < li.length; i++) {
+        a = li[i].getElementsByTagName("a")[0];
+        txtValue = a.textContent || a.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+        }
+    }
+}
+</script>
+
+</html>

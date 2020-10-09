@@ -1,0 +1,41 @@
+#list>li {
+    list-style-type: none;
+}
+
+#myInput {
+    border-color: #ccc;
+    border-style: solid;
+    height: 10%;
+    width: 15%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 2px solid;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+#text {
+    border-color: black;
+    border-style: solid;
+    padding-left: 30%;
+    padding-right: 25%;
+    height: 40%;
+    width: 30%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 2px solid;
+    text-align: center;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.h1 {
+    color: black;
+    padding-left: 40%;
+}
+
+.strikethrough {
+    text-decoration: line-through;
+}
